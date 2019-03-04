@@ -118,14 +118,14 @@ def historical_transactions_monthlag(monthlag,num_rows=None):
 
     # change column name
     hist_df.columns = pd.Index([e[0] + "_" + e[1] for e in hist_df.columns.tolist()])
-    hist_df.columns = ['new_month0'+ c for c in hist_df.columns]
+    hist_df.columns = ['hist_monthlag' + str(monthlag)+ c for c in hist_df.columns]
 
-    hist_df['new_month0purchase_date_diff'] = (hist_df['new_month0purchase_date_max']-hist_df['new_month0purchase_date_min']).dt.days
-    hist_df['new_month0purchase_date_average'] = hist_df['new_month0purchase_date_diff']/hist_df['new_month0card_id_size']
-    hist_df['new_month0purchase_date_uptonow'] = (datetime.datetime.today()-hist_df['new_month0purchase_date_max']).dt.days
-    hist_df['new_month0purchase_date_uptomin'] = (datetime.datetime.today()-hist_df['new_month0purchase_date_min']).dt.days
+    hist_df['hist_monthlag' + str(monthlag)+'purchase_date_diff'] = (hist_df['hist_monthlag' + str(monthlag)+'purchase_date_max']-hist_df['hist_monthlag' + str(monthlag)+'purchase_date_min']).dt.days
+    hist_df['hist_monthlag' + str(monthlag)+'purchase_date_average'] = hist_df['hist_monthlag' + str(monthlag)+'purchase_date_diff']/hist_df['hist_monthlag' + str(monthlag)+'card_id_size']
+    hist_df['hist_monthlag' + str(monthlag)+'purchase_date_uptonow'] = (datetime.datetime.today()-hist_df['hist_monthlag' + str(monthlag)+'purchase_date_max']).dt.days
+    hist_df['hist_monthlag' + str(monthlag)+'purchase_date_uptomin'] = (datetime.datetime.today()-hist_df['hist_monthlag' + str(monthlag)+'purchase_date_min']).dt.days
 
-    hist_df.drop(['new_month0purchase_date_max','new_month0purchase_date_min'],axis=1,inplace=True)
+    hist_df.drop(['hist_monthlag' + str(monthlag)+'purchase_date_max','hist_monthlag' + str(monthlag)+'purchase_date_min'],axis=1,inplace=True)
     # reduce memory usage
     hist_df = reduce_mem_usage(hist_df)
 
