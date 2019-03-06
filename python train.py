@@ -666,6 +666,26 @@ first_preds["random"] = oof_preds
 first_test["random"] = sub_preds
 print(ans/ folds.n_splits)
 
+# predict ExtraTree
+from sklearn.ensemble import ExtraTreesRegressor
+reg = ExtraTreesRegressor(n_jobs=-1, n_estimators=300, verbose=-1, random_state=131)
+oof_preds = np.zeros(first_preds.shape[0])
+sub_preds = np.zeros(first_test.shape[0])
+feature_importance_df = pd.DataFrame()
+ans = 0
+for n_fold, (train_idx, valid_idx) in enumerate(folds.split(train_df2[feats])):
+    train_x, train_y = train_df2[feats].iloc[train_idx], train_df2["target"].iloc[train_idx]
+    valid_x, valid_y = train_df2[feats].iloc[valid_idx], train_df2["target"].iloc[valid_idx]
+    reg.fit(train_x, train_y)
+    pred_y = reg.predict(valid_x)
+    print('Fold %2d RMSE : %.6f' % (n_fold + 1, rmse(valid_y, pred_y)))
+    oof_preds[valid_idx] = pred_y
+    sub_preds += reg.predict(test_df2[feats]) / folds.n_splits
+    ans += rmse(valid_y, pred_y)
+first_preds["extratree"] = oof_preds
+first_test["extratree"] = sub_preds
+print(ans/ folds.n_splits)
+
 #predict ridge
 from sklearn.linear_model import Ridge
 reg = Ridge(alpha=0.1)
@@ -1006,6 +1026,26 @@ for n_fold, (train_idx, valid_idx) in enumerate(folds.split(train_df2[feats])):
     ans += rmse(valid_y, pred_y)
 first_preds["random"] = oof_preds
 first_test["random"] = sub_preds
+print(ans/ folds.n_splits)
+
+# predict ExtraTree
+from sklearn.ensemble import ExtraTreesRegressor
+reg = ExtraTreesRegressor(n_jobs=-1, n_estimators=300, verbose=-1, random_state=131)
+oof_preds = np.zeros(first_preds.shape[0])
+sub_preds = np.zeros(first_test.shape[0])
+feature_importance_df = pd.DataFrame()
+ans = 0
+for n_fold, (train_idx, valid_idx) in enumerate(folds.split(train_df2[feats])):
+    train_x, train_y = train_df2[feats].iloc[train_idx], train_df2["target"].iloc[train_idx]
+    valid_x, valid_y = train_df2[feats].iloc[valid_idx], train_df2["target"].iloc[valid_idx]
+    reg.fit(train_x, train_y)
+    pred_y = reg.predict(valid_x)
+    print('Fold %2d RMSE : %.6f' % (n_fold + 1, rmse(valid_y, pred_y)))
+    oof_preds[valid_idx] = pred_y
+    sub_preds += reg.predict(test_df2[feats]) / folds.n_splits
+    ans += rmse(valid_y, pred_y)
+first_preds["extratree"] = oof_preds
+first_test["extratree"] = sub_preds
 print(ans/ folds.n_splits)
 
 #predict ridge
