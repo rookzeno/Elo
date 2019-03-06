@@ -11,13 +11,15 @@ Intel CPU Core i7-8700K
 GeForce GTX 1080 Ti *1
 
 # SOFTWARE (python packages are detailed separately in `requirements.txt`):
-Python 3.5.1
+Python 3.6.5
 CUDA 10.0
 cuddn 7.3.0
 nvidia drivers v.410.79
 
 # DATA SETUP (assumes the [Kaggle API](https://github.com/Kaggle/kaggle-api) is installed)
-nothing.
+cd input
+kaggle competitions download -c elo-merchant-category-recommendation
+cd ../
 
 # DATA PROCESSING
 python ./python prepare_data.py 
