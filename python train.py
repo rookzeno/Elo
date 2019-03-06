@@ -714,7 +714,7 @@ train_df['indexcol'],i = 0,1
 for k,v in vc.items():
     step = train_df.shape[0]/v
     indent = train_df.shape[0]/(v+1)
-    df2 = train_df[train_df['rounded_target'] == k].sample(v, random_state=400).reset_index(drop=True)
+    df2 = train_df[train_df['rounded_target'] == k].sample(v, random_state=4000).reset_index(drop=True)
     for j in range(0, v):
         df2.at[j, 'indexcol'] = indent + j*step + 0.000001*i
     df = pd.concat([df2,df])
